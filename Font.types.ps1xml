@@ -47,6 +47,12 @@
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Descent</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'descent' -as [float]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>FamilyName</Name>
         <GetScriptBlock>
                         $this | 
