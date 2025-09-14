@@ -1,0 +1,1 @@
+$this.FontFace.bbox -split '\s' -as [float[]]
