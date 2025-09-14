@@ -1,0 +1,18 @@
+<!-- Generated with EZOut 2.0.6: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>Font.File</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Family</Name>
+        <ReferencedMemberName>FamilyName</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>FamilyName</Name>
+        <GetScriptBlock>
+                        $this.Name.Substring(0, $this.Name.Length - $this.Extension.Length) -replace '-.+?$'
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
