@@ -35,6 +35,12 @@
         <ReferencedMemberName>FamilyName</ReferencedMemberName>
       </AliasProperty>
       <ScriptProperty>
+        <Name>Ascent</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'ascent' -as [float]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>BoundingBox</Name>
         <GetScriptBlock>
                         $this.FontFace.bbox -split '\s' -as [float[]]
