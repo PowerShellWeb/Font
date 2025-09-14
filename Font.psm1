@@ -32,8 +32,15 @@ $script:this = $myModule
 $fontForge = $ExecutionContext.SessionState.InvokeCommand.GetCommand('fontforge','application')
 if (-not $fontForge) {
     if ($env:GITHUB_EVENT_PATH) {        
+        "::group::Install Font Forge" | Out-Host
         sudo apt-get install fontforge -y | Out-Host
-        $fontForge = $ExecutionContext.SessionState.InvokeCommand.GetCommand('fontforge','application')
+        if ($?) {
+            "FontForge Installed!" | Out-Host
+        }
+        "Fonts Found" | Out-Host
+        Get-Font | Out-Host
+        "::endgroup::" | Out-Host        
+        $fontForge = $ExecutionContext.SessionState.InvokeCommand.GetCommand('fontforge','application')        
     } else {
         Write-Warning "FontForge is not installed and in the path.  Import/Export-Font will not work"
     }    
