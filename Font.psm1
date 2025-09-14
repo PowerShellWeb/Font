@@ -29,6 +29,15 @@ if ($home) {
 $script:this = $myModule
 
 #region Custom
+$fontForge = $ExecutionContext.SessionState.InvokeCommand.GetCommand('fontforge','application')
+if (-not $fontForge) {
+    if ($env:GITHUB_EVENT_PATH) {        
+        sudo apt-get install fontforge -y | Out-Host
+        $fontForge = $ExecutionContext.SessionState.InvokeCommand.GetCommand('fontforge','application')
+    } else {
+        Write-Warning "FontForge is not installed and in the path.  Import/Export-Font will not work"
+    }    
+}
 #endregion Custom
 
 Export-ModuleMember -Alias * -Function * -Variable $myModule.Name
