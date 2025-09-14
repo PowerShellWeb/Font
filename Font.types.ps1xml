@@ -7,6 +7,10 @@
         <Name>Family</Name>
         <ReferencedMemberName>FamilyName</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>FontFamily</Name>
+        <ReferencedMemberName>FamilyName</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>FamilyName</Name>
         <GetScriptBlock>
