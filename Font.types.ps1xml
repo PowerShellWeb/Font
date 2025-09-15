@@ -76,7 +76,7 @@ if ($value -is [string] -and $value.Length -le 2) {
       <ScriptProperty>
         <Name>FontFace</Name>
         <GetScriptBlock>
-                        $this.SVG | 
+                        $this.XML | 
     Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath //s:font-face |
     Select-Object -ExpandProperty Node
                     </GetScriptBlock>
@@ -94,23 +94,23 @@ if ($value -is [string] -and $value.Length -le 2) {
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
-        <Name>SVG</Name>
-        <GetScriptBlock>
-                        if (-not $this.'#SVG') {
-    if ($this -is [IO.FileInfo] -and $this.Extension -eq '.svg') {
-        $svgXml = (Get-Content -LiteralPath $this.FullName -Raw) -as [xml]
-        if ($svgXml) {
-            $this | Add-Member NoteProperty '#SVG' $svgXml -Force
-        }
-    }
-}
-return $this.'#SVG'
-                    </GetScriptBlock>
-      </ScriptProperty>
-      <ScriptProperty>
         <Name>UnitsPerEm</Name>
         <GetScriptBlock>
                         $this.FontFace.'units-per-em' -as [float]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>XML</Name>
+        <GetScriptBlock>
+                        if (-not $this.'#XML') {
+    if ($this -is [IO.FileInfo] -and $this.Extension -eq '.svg') {
+        $svgXml = (Get-Content -LiteralPath $this.FullName -Raw) -as [xml]
+        if ($svgXml) {
+            $this | Add-Member NoteProperty '#XML' $svgXml -Force
+        }
+    }
+}
+return $this.'#XML'
                     </GetScriptBlock>
       </ScriptProperty>
     </Members>
