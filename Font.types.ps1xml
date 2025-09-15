@@ -37,10 +37,16 @@
       <ScriptMethod>
         <Name>GetGlyph</Name>
         <Script>
-                        param([string]$value)
-$this | 
-    Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath "//s:glyph[@unicode='$($value -replace "'", "''")']" |
-    Select-Object -ExpandProperty Node
+                        param(
+[PSObject]$value
+)
+
+if ($value -is [string] -and $value.Length -le 2) {
+    $this.SVG | 
+        Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath "//s:glyph[@unicode='$($value -replace "'", "''")']" |
+        Select-Object -ExpandProperty Node
+}
+
                     </Script>
       </ScriptMethod>
       <ScriptProperty>
@@ -64,16 +70,13 @@ $this |
       <ScriptProperty>
         <Name>FamilyName</Name>
         <GetScriptBlock>
-                        $this | 
-    Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath //s:font-face |
-    Select-Object -ExpandProperty Node |
-    Select-Object -ExpandProperty font-family
+                        $this.FontFace.'font-family'    
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
         <Name>FontFace</Name>
         <GetScriptBlock>
-                        $this | 
+                        $this.SVG | 
     Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath //s:font-face |
     Select-Object -ExpandProperty Node
                     </GetScriptBlock>
@@ -81,19 +84,27 @@ $this |
       <ScriptProperty>
         <Name>FontStyle</Name>
         <GetScriptBlock>
-                        $this | 
-    Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath //s:font-face |
-    Select-Object -ExpandProperty Node |
-    Select-Object -ExpandProperty font-style
+                        $this.FontFace.'font-style'
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
         <Name>FontWeight</Name>
         <GetScriptBlock>
-                        $this | 
-    Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath //s:font-face |
-    Select-Object -ExpandProperty Node |
-    Select-Object -ExpandProperty font-weight
+                        $this.FontFace.'font-weight'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>SVG</Name>
+        <GetScriptBlock>
+                        if (-not $this.'#SVG') {
+    if ($this -is [IO.FileInfo] -and $this.Extension -eq '.svg') {
+        $svgXml = (Get-Content -LiteralPath $this.FullName -Raw) -as [xml]
+        if ($svgXml) {
+            $this | Add-Member NoteProperty '#SVG' $svgXml -Force
+        }
+    }
+}
+return $this.'#SVG'
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
