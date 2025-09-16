@@ -21,7 +21,5 @@ $importedFont =
         Select-Object -First 1 |
         Import-Font
 
-$importedFont.GetGlyph("P").SVG.Save("$pwd/${FontFamily}_P.svg")
-Get-Item "$pwd/${FontFamily}_P.svg"
-$importedFont.GetGlyph("q").SVG.Save("$pwd/${FontFamily}_q.svg")
-Get-Item "$pwd/${FontFamily}_q.svg"
+$importedFont.GetGlyph("P").Save("./${FontFamily}_P.svg")
+$importedFont.GetGlyph("q").Save("./${FontFamily}_q.svg")
