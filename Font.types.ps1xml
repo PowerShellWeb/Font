@@ -23,6 +23,27 @@
     <Name>Font.Glyph</Name>
     <Members>
       <ScriptProperty>
+        <Name>Outline</Name>
+        <GetScriptBlock>
+                        $fontFace = $this.ParentNode.'font-face'
+$descent = $fontFace.descent -as [double]
+$bbox = $fontFace.bbox -split '\s' -as [double[]]
+$viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
+@("&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
+
+"&lt;path stroke='currentColor' d='$($this.PathData)' /&gt;"
+@"
+&lt;circle r="5" fill="red"&gt;
+    &lt;animateMotion
+      dur="10s"
+      repeatCount="indefinite"
+      path="$($pathData)" /&gt;
+  &lt;/circle&gt;
+"@
+"&lt;/svg&gt;") -as [xml]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>PathData</Name>
         <GetScriptBlock>
                         &lt;#
@@ -34,6 +55,20 @@
     Glyph paths are drawn upside down by default.
 #&gt;
 $this.d
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>SVG</Name>
+        <GetScriptBlock>
+                        $fontFace = $this.ParentNode.'font-face'
+$descent = $fontFace.descent -as [double]
+$bbox = $fontFace.bbox -split '\s' -as [double[]]
+$viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
+@(
+    "&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
+    "&lt;path fill='currentColor' d='$($this.PathData)' /&gt;"    
+    "&lt;/svg&gt;"
+) -as [xml]
                     </GetScriptBlock>
       </ScriptProperty>
     </Members>
