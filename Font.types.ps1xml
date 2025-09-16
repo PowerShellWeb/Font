@@ -163,6 +163,10 @@ if ($null -eq $value) {
         <GetScriptBlock>
                         $this.FontFace.'font-family'    
                     </GetScriptBlock>
+        <SetScriptBlock>
+                        param([string]$FontFamily)
+$this.FontFace.'font-family' = $FontFamily
+                    </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
         <Name>FontFace</Name>
