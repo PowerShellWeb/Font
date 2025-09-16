@@ -27,8 +27,7 @@
         <GetScriptBlock>
                         $fontFace = $this.ParentNode.'font-face'
 $descent = $fontFace.descent -as [double]
-$bbox = $fontFace.bbox -split '\s' -as [double[]]
-$viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
+$viewbox = $fontFace.bbox -split '\s' -as [double[]]
 $PathData = $this.PathData
 @(
     "&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
@@ -52,8 +51,7 @@ $PathData = $this.PathData
         <GetScriptBlock>
                         $fontFace = $this.ParentNode.'font-face'
 $descent = $fontFace.descent -as [double]
-$bbox = $fontFace.bbox -split '\s' -as [double[]]
-$viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
+$viewbox = $fontFace.bbox -split '\s' -as [double[]]
 @("&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
 
 "&lt;path stroke='currentColor' fill='transparent' d='$($this.PathData)' /&gt;"
