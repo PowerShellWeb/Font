@@ -5,7 +5,7 @@ $viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
 $PathData = $this.PathData
 @(
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'>"
-    "<path stroke='currentColor' d='$($PathData)'  />"
+    "<path stroke='currentColor' fill='transparent' d='$($PathData)'  />"
 @"
 <circle r="5" fill="currentColor">
     <animateMotion
