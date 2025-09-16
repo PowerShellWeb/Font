@@ -30,7 +30,7 @@ CompanyName = 'Start Automating'
 Copyright = '(c) James Brundage. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'Manage and Manipulate Fonts in PowerShell'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
