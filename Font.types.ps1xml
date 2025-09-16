@@ -32,7 +32,7 @@ $viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
 $PathData = $this.PathData
 @(
     "&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
-    "&lt;path stroke='currentColor' d='$($PathData)'  /&gt;"
+    "&lt;path stroke='currentColor' fill='transparent' d='$($PathData)'  /&gt;"
 @"
 &lt;circle r="5" fill="currentColor"&gt;
     &lt;animateMotion
@@ -56,7 +56,7 @@ $bbox = $fontFace.bbox -split '\s' -as [double[]]
 $viewbox = "0 $($bbox[-3] - $descent) $($bbox[-2]) $($bbox[-1])"
 @("&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
 
-"&lt;path stroke='currentColor' d='$($this.PathData)' /&gt;"
+"&lt;path stroke='currentColor' fill='transparent' d='$($this.PathData)' /&gt;"
 "&lt;/svg&gt;") -as [xml]
                     </GetScriptBlock>
       </ScriptProperty>
