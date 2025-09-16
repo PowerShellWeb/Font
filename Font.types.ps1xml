@@ -33,6 +33,12 @@ $this.SVG.Save($createdFile.FullName)
 Get-Item -LiteralPath $createdFile.FullName
                     </Script>
       </ScriptMethod>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+                        "$($this.SVG.OuterXml)"
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>Motion</Name>
         <GetScriptBlock>
