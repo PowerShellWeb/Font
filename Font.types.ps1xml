@@ -22,6 +22,17 @@
   <Type>
     <Name>Font.Glyph</Name>
     <Members>
+      <ScriptMethod>
+        <Name>Save</Name>
+        <Script>
+                        param([string]$FilePath)
+
+$unresolvedPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($FilePath)
+$createdFile = New-Item -ItemType File -Path $unresolvedPath
+$this.SVG.Save($createdFile.FullName)
+Get-Item -LiteralPath $createdFile.FullName
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>Motion</Name>
         <GetScriptBlock>
