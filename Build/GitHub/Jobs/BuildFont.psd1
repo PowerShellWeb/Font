@@ -7,12 +7,12 @@
             uses = 'actions/checkout@main'
         },                
         'RunEZOut' #  ,
-        <#@{
+        @{
             name = 'Run Action (on branch)'
             if   = '${{github.ref_name != ''main''}}'
             uses = './'
             id = 'Action'
-        }#>
+        }
         # 'BuildAndPublishContainer'
     )
 }

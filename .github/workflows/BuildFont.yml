@@ -496,6 +496,10 @@ jobs:
         uses: actions/checkout@main
       - name: UseEZOut
         uses: StartAutomating/EZOut@master
+      - name: Run Action (on branch)
+        if: ${{github.ref_name != 'main'}}
+        uses: ./
+        id: Action
 env: 
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
