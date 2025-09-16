@@ -185,6 +185,16 @@ if ($null -eq $value) {
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>ID</Name>
+        <GetScriptBlock>
+                        return $this.FontFace.ParentNode.id
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        param([string]$id)
+$this.FontFace.ParentNode.id = $id
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>UnitsPerEm</Name>
         <GetScriptBlock>
                         $this.FontFace.'units-per-em' -as [float]
