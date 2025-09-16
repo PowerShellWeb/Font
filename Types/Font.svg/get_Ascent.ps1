@@ -1,0 +1,1 @@
+$this.FontFace.'ascent' -as [float]

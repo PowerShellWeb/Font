@@ -1,0 +1,1 @@
+"$($this.SVG.OuterXml)"

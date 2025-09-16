@@ -1,0 +1,229 @@
+<!-- Generated with EZOut 2.0.6: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>Font.File</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Family</Name>
+        <ReferencedMemberName>FamilyName</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>FontFamily</Name>
+        <ReferencedMemberName>FamilyName</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>FamilyName</Name>
+        <GetScriptBlock>
+                        $this.Name.Substring(0, $this.Name.Length - $this.Extension.Length) -replace '-.+?$'
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Font.Glyph</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Save</Name>
+        <Script>
+                        param([string]$FilePath)
+
+$unresolvedPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($FilePath)
+$createdFile = New-Item -ItemType File -Path $unresolvedPath
+$this.SVG.Save($createdFile.FullName)
+Get-Item -LiteralPath $createdFile.FullName
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+                        "$($this.SVG.OuterXml)"
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Motion</Name>
+        <GetScriptBlock>
+                        $fontFace = $this.ParentNode.'font-face'
+$descent = $fontFace.descent -as [double]
+$viewbox = $fontFace.bbox -split '\s' -as [double[]]
+$PathData = $this.PathData
+@(
+    "&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
+    "&lt;path stroke='currentColor' fill='transparent' d='$($PathData)'  /&gt;"
+@"
+&lt;circle r="5" fill="currentColor"&gt;
+    &lt;animateMotion
+      dur="10s"
+      repeatCount="indefinite"
+      path="$($PathData)" /&gt;
+  &lt;/circle&gt;
+"@
+    "&lt;/svg&gt;"
+) -as [xml]
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Outline</Name>
+        <GetScriptBlock>
+                        $fontFace = $this.ParentNode.'font-face'
+$descent = $fontFace.descent -as [double]
+$viewbox = $fontFace.bbox -split '\s' -as [double[]]
+@("&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
+
+"&lt;path stroke='currentColor' fill='transparent' d='$($this.PathData)' /&gt;"
+"&lt;/svg&gt;") -as [xml]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>PathData</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the glyph path data
+.DESCRIPTION
+    Gets the glyph path data.
+    
+    Glyph paths are drawn upside down by default.
+#&gt;
+$this.d
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>SVG</Name>
+        <GetScriptBlock>
+                        $fontFace = $this.ParentNode.'font-face'
+$descent = $fontFace.descent -as [double]
+$bbox = $fontFace.bbox -split '\s' -as [double[]]
+$viewbox = $bbox
+@(
+    "&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'&gt;"
+    "&lt;path fill='currentColor' d='$($this.PathData)'  /&gt;"
+    "&lt;/svg&gt;"
+) -as [xml]
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Font.svg</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Face</Name>
+        <ReferencedMemberName>FontFace</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Family</Name>
+        <ReferencedMemberName>FamilyName</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>FontFamily</Name>
+        <ReferencedMemberName>FamilyName</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>GetGlyph</Name>
+        <Script>
+                        param(
+[PSObject]$value
+)
+
+filter toGlyph {    
+    $_.Node.pstypenames.add('Font.glyph')
+    $_.Node
+}
+if ($value -is [string] -and $value.Length -le 2) {
+    $escapedValue = $($value -replace "'","''")
+    $this.XML | 
+        Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath "//s:glyph[@unicode='$escapedValue'] | //s:glyph[@glyph-name='$escapedValue']" | 
+        toGlyph
+}
+
+if ($null -eq $value) {
+    $this.XML | 
+        Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath "//s:glyph" |
+        toGlyph
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Ascent</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'ascent' -as [float]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>BoundingBox</Name>
+        <GetScriptBlock>
+                        $this.FontFace.bbox -split '\s' -as [float[]]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Descent</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'descent' -as [float]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FamilyName</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'font-family'    
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        param([string]$FontFamily)
+$this.FontFace.'font-family' = $FontFamily
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontFace</Name>
+        <GetScriptBlock>
+                        $this.XML | 
+    Select-Xml -Namespace @{s='http://www.w3.org/2000/svg'} -XPath //s:font-face |
+    Select-Object -ExpandProperty Node
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontStyle</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'font-style'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontWeight</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'font-weight'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ID</Name>
+        <GetScriptBlock>
+                        return $this.FontFace.ParentNode.id
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        param([string]$id)
+$this.FontFace.ParentNode.id = $id
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>UnitsPerEm</Name>
+        <GetScriptBlock>
+                        $this.FontFace.'units-per-em' -as [float]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>XML</Name>
+        <GetScriptBlock>
+                        if (-not $this.'#XML') {
+    if ($this -is [IO.FileInfo] -and $this.Extension -eq '.svg') {
+        $svgXml = (Get-Content -LiteralPath $this.FullName -Raw) -as [xml]
+        if ($svgXml) {
+            $this | Add-Member NoteProperty '#XML' $svgXml -Force
+        }
+    }
+}
+return $this.'#XML'
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>

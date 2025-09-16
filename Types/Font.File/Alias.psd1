@@ -1,0 +1,4 @@
+@{
+    Family = 'FamilyName'
+    FontFamily = 'FamilyName'
+}

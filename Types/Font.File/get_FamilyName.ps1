@@ -1,0 +1,1 @@
+$this.Name.Substring(0, $this.Name.Length - $this.Extension.Length) -replace '-.+?$'

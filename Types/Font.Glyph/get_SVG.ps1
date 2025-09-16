@@ -1,0 +1,9 @@
+$fontFace = $this.ParentNode.'font-face'
+$descent = $fontFace.descent -as [double]
+$bbox = $fontFace.bbox -split '\s' -as [double[]]
+$viewbox = $bbox
+@(
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='$viewbox' width='100%' height='100%' transform='scale(1 -1)'>"
+    "<path fill='currentColor' d='$($this.PathData)'  />"
+    "</svg>"
+) -as [xml]

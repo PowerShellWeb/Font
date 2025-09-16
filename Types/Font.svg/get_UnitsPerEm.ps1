@@ -1,0 +1,1 @@
+$this.FontFace.'units-per-em' -as [float]
